@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="can_state_machine.vcxproj" Id="2f0263b9-0068-4b88-9b3e-17148bec4628" />
+</Solution>
