@@ -23,11 +23,13 @@
     <ClCompile Include="src\driver\can.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\service\event_buffer.c" />
+    <ClCompile Include="src\service\timeout.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\state_machine.h" />
     <ClInclude Include="src\driver\can.h" />
     <ClInclude Include="src\service\event_buffer.h" />
+    <ClInclude Include="src\service\timeout.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

@@ -1,9 +1,8 @@
 #include<stdio.h>
 #include<string.h>
 #include"can.h"
-#if 0
-#include "event_buffer.h"
-#endif
+#include "../service/timeout.h"
+#include "../service/event_buffer.h"
 
 /* テーブル */
 CanFrame can_table[CAN_STATE_MAX] = {
@@ -85,6 +84,9 @@ void Can_RxInterruptMock(char in_ch)
     }
 
     ev = CheckCanFrame(&frame);
-    EventBuffer_Push(ev);
-}
 
+    if (ev != STATE_INVALID) {
+        Timeout_OnCanEvent();                     /* ★ タイマをリセット */
+        (void)EventBuffer_Push(ev, EVENT_SRC_ISR);
+    }
+}
