@@ -63,20 +63,20 @@ void Can_RxInterruptMock(char in_ch)
 
     memset(&frame, 0, sizeof(frame));
 
-    if ('r' == in_ch) {
+    if ('r' == in_ch) {      /* READY */
         frame.id = 0x100; frame.dlc = 1; frame.data[0] = 0x01;
     }
-    else if ('s' == in_ch) {
+    else if ('s' == in_ch) { /* START */
         frame.id = 0x101; frame.dlc = 2; frame.data[0] = 0x02; frame.data[1] = 0x02;
     }
-    else if ('t' == in_ch) {
+    else if ('t' == in_ch) { /* STOP */
         frame.id = 0x102; frame.dlc = 3;
         frame.data[0] = 0x03; frame.data[1] = 0x03; frame.data[2] = 0x03;
     }
-    else if (in_ch == 'e') { /* FAULT */
+    else if ('e' == in_ch) { /* FAULT */
         frame.id = 0x104; frame.dlc = 1; frame.data[0] = 0xFF;
     }
-    else if (in_ch == 'x') { /* RESET */
+    else if ('x' == in_ch) { /* RESET */
         frame.id = 0x103; frame.dlc = 1; frame.data[0] = 0x04;
     }
     else {
