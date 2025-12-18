@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <conio.h>
 
 #include "driver/can.h"
 #include "service/event_buffer.h"
@@ -8,6 +9,10 @@
 
 int main(void)
 {
+    int         ch;
+    CanState    ev;
+    EventSource src;
+
     /* 初期化 */
     EventBuffer_Init();
     Timeout_Init();
@@ -16,25 +21,34 @@ int main(void)
 
     /* 簡易ループ (PC上) */
     while (1) {
-        /* ① ここで擬似的に割り込みを発生させる (キー入力など) */
-        int ch = getchar();       /* 本当は非ブロッキングが理想 */
-        Can_RxInterruptMock((char)ch);
+        /* 現在状態を取得 */
+        EcuState cur = GetState();
 
-        /* ② タイマを進める (10ms経過した想定など) */
-        Timeout_Tick(10U);
+        /* ACTIVE状態のときだけタイマ監視を行う */
+        if (cur == STATE_ACTIVE) {
+            Timeout_Tick(10U);
+        }
 
-        /* ③ キューからイベントを取り出して状態遷移 */
-        CanState    ev;
-        EventSource src;
+        /* キーが押された瞬間だけ処理(非ブロッキング) */
+        if (_kbhit()) {
+            ch = _getch();
+            printf("Key='%c'\n", ch);  /* ← どれを押したか見えるようにする */
+            Can_RxInterruptMock((char)ch);
+        }
 
+        /* キューからイベントを取り出して状態遷移 */
         while (EventBuffer_Pop(&ev, &src)) {
-            /* 今回は src はログ用・将来の拡張用に持っておく */
+            printf("[%-6s] Event=%-6s → ",
+                SrcToString(src),
+                EventToString(ev));
+
             StateMachine_UpdateByEvent(ev);
             PrintState();
         }
 
-        /* 実機ならここで TaskDelay(10ms) やスリープなど */
+        Sleep(1);
     }
+
 
     return 0;
 }

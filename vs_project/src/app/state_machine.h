@@ -28,6 +28,7 @@ EcuState  GetState(void);				/* 現在状態の取得		*/
 void PrintState(void);					/* 状態出力			*/
 void StateMachine_Reset(EcuState init);
 void StateMachine_UpdateByEvent(CanState ev);
+const char* EventToString(CanState ev);
 
 
 /* ヘッダガード */

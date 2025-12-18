@@ -93,7 +93,8 @@ STATE_ACTIVE
 
 STATE_ERROR
 - RESET 受信時 → STATE_INIT へ遷移
-- 上記以外のイベントは無視する
+- RESET 以外のイベントは受け付けない
+- READY / START / STOP / FAULT はすべて無視する
 
 
 7. 責務分離

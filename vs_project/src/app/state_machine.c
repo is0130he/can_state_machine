@@ -70,3 +70,16 @@ void StateMachine_UpdateByEvent(CanState ev)
 	printf("Illegal transition cur=%d ev=%d\n", state, ev);
 }
 
+const char* EventToString(CanState ev)
+{
+	switch (ev) {
+	case READY:			return "READY";
+	case START:			return "START";
+	case STOP:			return "STOP";
+	case RESET:			return "RESET";
+	case FAULT:			return "FAULT";
+	case STATE_INVALID: return "INVALID";
+	default:			return "UNKNOWN";
+	}
+}
+

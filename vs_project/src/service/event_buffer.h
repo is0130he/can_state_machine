@@ -33,5 +33,7 @@ void EventBuffer_Init(void);
 int  EventBuffer_Push(CanState ev, EventSource src);
 /* 返り値: 成功=1 / 失敗(空)=0 */
 int  EventBuffer_Pop(CanState* ev, EventSource* src);
+/* 返り値: イベントに対応する文字列 */
+const char* SrcToString(EventSource src);
 
 #endif

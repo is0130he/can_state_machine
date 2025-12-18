@@ -77,3 +77,13 @@ int EventBuffer_Pop(CanState* ev, EventSource* src)
     LeaveCritical(EVENT_SRC_TASK);
     return 1;
 }
+
+const char* SrcToString(EventSource src)
+{
+    switch (src) {
+    case EVENT_SRC_ISR:   return "ISR";
+    case EVENT_SRC_TASK:  return "TASK";
+    case EVENT_SRC_TIMER: return "TIMER";
+    default:              return "UNKNOWN";
+    }
+}
