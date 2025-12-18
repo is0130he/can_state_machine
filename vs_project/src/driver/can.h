@@ -8,11 +8,6 @@
 #include<stdbool.h>
 #include<stdlib.h>
 
-/* Windows/Linux 差分は一旦無効化（ビルド確認優先） */
-/* #include <windows.h> */
-/* #include <unistd.h> */
-
-
 /* CAN受信状態 */
 typedef enum {
 	READY,

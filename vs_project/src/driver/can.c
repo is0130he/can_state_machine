@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include"can.h"
+#include "../driver/can_event_mapper.h"
 #include "../service/timeout.h"
 #include "../service/event_buffer.h"
 
@@ -60,6 +61,7 @@ void Can_RxInterruptMock(char in_ch)
     /* 一時変数 */
     CanFrame frame;
     CanState ev;
+    AppEvent app_ev;
 
     memset(&frame, 0, sizeof(frame));
 
@@ -87,6 +89,10 @@ void Can_RxInterruptMock(char in_ch)
 
     if (ev != STATE_INVALID) {
         Timeout_OnCanEvent();                     /* ★ タイマをリセット */
-        (void)EventBuffer_Push(ev, EVENT_SRC_ISR);
+
+        /* CAN → AppEvent 変換 */
+        app_ev = CanEvent_ToAppEvent(ev);
+
+        (void)EventBuffer_Push(app_ev, EVENT_SRC_ISR);
     }
 }

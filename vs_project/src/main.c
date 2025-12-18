@@ -6,12 +6,18 @@
 #include "service/event_buffer.h"
 #include "service/timeout.h"
 #include "app/state_machine.h"
+#include "app/event_dispatch.h"
+#include "app/app_event.h"
+
+
+static int logged_ready_in_active = 0;
 
 int main(void)
 {
     int         ch;
-    CanState    ev;
+    AppEvent    ev;
     EventSource src;
+    EcuState    cur;
 
     /* 初期化 */
     EventBuffer_Init();
@@ -22,7 +28,7 @@ int main(void)
     /* 簡易ループ (PC上) */
     while (1) {
         /* 現在状態を取得 */
-        EcuState cur = GetState();
+        cur = GetState();
 
         /* ACTIVE状態のときだけタイマ監視を行う */
         if (cur == STATE_ACTIVE) {
@@ -38,23 +44,7 @@ int main(void)
 
         /* キューからイベントを取り出して状態遷移 */
         while (EventBuffer_Pop(&ev, &src)) {
-
-            EcuState cur = GetState();
-
-            /* ERROR中は RESET 以外のイベントを無視する */
-            if (cur == STATE_ERROR && ev != RESET) {
-                printf("[%-6s] Event=%-6s IGNORED (STATE_ERROR)\n",
-                    SrcToString(src),
-                    EventToString(ev));
-                continue;
-            }
-
-            printf("[%-6s] Event=%-6s → ",
-                SrcToString(src),
-                EventToString(ev));
-
-            StateMachine_UpdateByEvent(ev);
-            PrintState();
+            EventDispatch_Process(ev, src);
         }
 
         Sleep(1);

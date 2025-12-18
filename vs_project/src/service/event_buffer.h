@@ -2,6 +2,7 @@
 #define EVENT_BUFFER_H
 
 #include "../driver/can.h"
+#include "../app/app_event.h"
 
 /* イベント発行元の種類 */
 typedef enum {
@@ -30,9 +31,9 @@ typedef struct {
 void EventBuffer_Init(void);
 
 /* 返り値: 成功=1 / 失敗(満杯など)=0 */
-int  EventBuffer_Push(CanState ev, EventSource src);
+int  EventBuffer_Push(AppEvent ev, EventSource src);
 /* 返り値: 成功=1 / 失敗(空)=0 */
-int  EventBuffer_Pop(CanState* ev, EventSource* src);
+int  EventBuffer_Pop(AppEvent* ev, EventSource* src);
 /* 返り値: イベントに対応する文字列 */
 const char* SrcToString(EventSource src);
 
