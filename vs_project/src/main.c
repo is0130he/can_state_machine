@@ -38,6 +38,17 @@ int main(void)
 
         /* キューからイベントを取り出して状態遷移 */
         while (EventBuffer_Pop(&ev, &src)) {
+
+            EcuState cur = GetState();
+
+            /* ERROR中は RESET 以外のイベントを無視する */
+            if (cur == STATE_ERROR && ev != RESET) {
+                printf("[%-6s] Event=%-6s IGNORED (STATE_ERROR)\n",
+                    SrcToString(src),
+                    EventToString(ev));
+                continue;
+            }
+
             printf("[%-6s] Event=%-6s → ",
                 SrcToString(src),
                 EventToString(ev));
