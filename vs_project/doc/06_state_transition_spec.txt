@@ -19,3 +19,10 @@ STATE_ERROR
 - RESET 受信時 → STATE_INIT へ遷移
 - RESET 以外のイベントは受け付けない
 - READY / START / STOP / FAULT はすべて無視する
+
+【設計変更】
+以下の遷移を削除する。
+
+・STATE_ACTIVE + RESET → STATE_INIT
+
+上記により、STATE_ACTIVE 中の RESET は未定義遷移として扱う。
