@@ -1,0 +1,21 @@
+6. 状態遷移仕様（抜粋）
+--------------------------------------------------
+
+STATE_INIT
+- READY 受信時 → STATE_STANDBY へ遷移
+- 上記以外のイベントは無視する
+
+STATE_STANDBY
+- START 受信時 → STATE_ACTIVE へ遷移
+- RESET 受信時 → STATE_INIT へ遷移
+- 上記以外のイベントは無視する
+
+STATE_ACTIVE
+- STOP 受信時 → STATE_STANDBY へ遷移
+- FAULT 受信時 → STATE_ERROR へ遷移
+- 上記以外のイベントは無視する
+
+STATE_ERROR
+- RESET 受信時 → STATE_INIT へ遷移
+- RESET 以外のイベントは受け付けない
+- READY / START / STOP / FAULT はすべて無視する
